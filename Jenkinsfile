@@ -2,11 +2,11 @@
 
 pipeline {
     agent {
-        label 'my-agent'   // Replace with your agent label
+        label 'jenkins-agent'   // Replace with your agent label
     }
     
     environment {
-        DOCKER_IMAGE_NAME = "your-dockerhub-username/your-image-name" // Replace
+        DOCKER_IMAGE_NAME = "mujimmy/openjdk" // Replace
         DOCKER_IMAGE_VERSION = "${BUILD_NUMBER}"
         SONAR_PROJECT_KEY = "my-gradle-project-key"
         SONAR_PROJECT_NAME = "My Gradle Project"
