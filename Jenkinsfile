@@ -2,7 +2,7 @@
 
 pipeline {
     agent {
-        label 'jenkins-agent'   // Replace with your agent label
+        label 'aws-ec2-agent'   // Replace with your agent label
     }
     
     environment {
