@@ -68,18 +68,44 @@ pipeline {
              }
          }
       }
-   stage('Deploy to Kind Cluster') {
-       steps {
-           script {
-              deployToKindStage(
-                DOCKER_IMAGE_NAME: "${DOCKER_IMAGE_NAME}",
-                DOCKER_IMAGE_VERSION: "${DOCKER_IMAGE_VERSION}",
-                DEPLOYMENT_NAME: "${DEPLOYMENT_NAME}",
-                 CONTAINER_NAME: "${CONTAINER_NAME}"
-                 )
-             }
+      stage('Deploy to Kind Cluster') {
+          steps {
+              script {
+                  try {
+                      echo "Starting deployment to Kind cluster..."
+                      deployToKindStage(
+                          DOCKER_IMAGE_NAME: "${DOCKER_IMAGE_NAME}",
+                          DOCKER_IMAGE_VERSION: "${DOCKER_IMAGE_VERSION}",
+                          DEPLOYMENT_NAME: "${DEPLOYMENT_NAME}",
+                          CONTAINER_NAME: "${CONTAINER_NAME}"
+                      )
+                      echo "Deployment completed successfully"
+                  } catch (Exception e) {
+                      echo "Deployment failed with error: ${e.getMessage()}"
+                      error "Failed to deploy to Kind cluster"
+                  }
+              }
           }
-        }
-     }
+      }
+      
+      // Optional verification stage
+      stage('Verify Deployment') {
+          steps {
+              script {
+                  withKubeConfig([credentialsId: 'kind-kubeconfig']) {
+                      sh """
+                          echo "Verifying deployment status..."
+                          kubectl --insecure-skip-tls-verify get pods -l app=${DEPLOYMENT_NAME} -o wide
+                          
+                          echo "\nChecking service endpoints..."
+                          kubectl --insecure-skip-tls-verify get endpoints ${DEPLOYMENT_NAME}
+                          
+                          echo "\nGetting deployment events..."
+                          kubectl --insecure-skip-tls-verify get events --sort-by='.lastTimestamp' | grep ${DEPLOYMENT_NAME} || true
+                      """
+                  }
+              }
+          }
+      }
   }
 
