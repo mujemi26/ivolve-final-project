@@ -10,7 +10,7 @@ pipeline {
        DOCKER_IMAGE_VERSION = "${BUILD_NUMBER}"
        SONAR_PROJECT_KEY = "my-gradle-project-key"
        SONAR_PROJECT_NAME = "My Gradle Project"
-       SONAR_HOST_URL = "http://localhost:9000"
+       SONAR_HOST_URL = "http://54.221.92.185/:9000"
        DEPLOYMENT_NAME= "my-deployment"
        CONTAINER_NAME="my-container"
    }
