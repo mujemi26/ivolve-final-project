@@ -69,12 +69,15 @@
                 }
              }
           }
-      stage('Deploy to Kind') {
-          steps {
-            script {
-                deployToKindStage()
+        stage('Deploy to Kind Cluster') {
+              steps {
+                  deployToKindStage(
+                      deploymentName: 'my-deployment',
+                      containerName: 'my-container',
+                      imageName: 'my-docker-image',
+                      imageVersion: 'latest'
+                  )
               }
-           }
-       }
+          }
+      }
     }
-  }
