@@ -1,4 +1,4 @@
-@Library('my-jenkins-shared-lib@main') _ // Replace 'my-jenkins-shared-lib' with your repo name and main with branch
+@Library('my-jenkins-shared-lib') _ // Replace 'my-jenkins-shared-lib' with your repo name and main with branch
 
 pipeline {
     agent {
