@@ -93,25 +93,6 @@ pipeline {
             }
         }
         
-        stage('Verify Deployment') {
-            steps {
-                script {
-                    withKubeConfig([credentialsId: 'kind-kubeconfig']) {
-                        sh """
-                            echo "Verifying deployment status..."
-                            kubectl --insecure-skip-tls-verify get pods -l app=${DEPLOYMENT_NAME} -o wide
-                            
-                            echo "\nChecking service endpoints..."
-                            kubectl --insecure-skip-tls-verify get endpoints ${DEPLOYMENT_NAME}
-                            
-                            echo "\nGetting deployment events..."
-                            kubectl --insecure-skip-tls-verify get events --sort-by='.lastTimestamp' | grep ${DEPLOYMENT_NAME} || true
-                        """
-                    }
-                }
-            }
-        }
-    }
     
     post {
         success {
