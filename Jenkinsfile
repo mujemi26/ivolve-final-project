@@ -92,7 +92,7 @@ pipeline {
                 }
             }
         }
-        
+    } // Added missing closing brace for stages block
     
     post {
         success {
@@ -105,4 +105,4 @@ pipeline {
             cleanWs()
         }
     }
-}
+} // Added missing closing brace for pipeline block
